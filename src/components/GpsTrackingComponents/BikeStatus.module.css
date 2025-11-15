@@ -1,0 +1,269 @@
+/* BikeStatus.module.css */
+
+.bikeStatusContainer {
+    /* max-width: 480px; */
+    width: 45%;
+    background: #fff;
+    box-shadow: 0px 6px 10px 0px rgba(124, 138, 191, 0.25);
+    border-radius: 20px;
+    /* min-height: 100vh; */
+    padding: 16px;
+}
+
+/* ---------- Header ---------- */
+.bikeStatusHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.bikeStatusTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(112, 126, 174, 1);
+    margin: 0;
+}
+
+/* ---------- Date/Time Row ---------- */
+.bikeStatusDateTimeRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.bikeStatusDateTimeGroup {
+    color: #303235;
+    border: 1px solid #c8ccd9;
+    border-radius: 8px;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    font-size: 14px;
+    display: flex;
+}
+
+.bikeStatusDateTimeItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.bikeStatusSeparator {
+    color: #9CA3AF;
+}
+
+.bikeStatusActions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.bikeStatusExportBtn {
+    background: transparent;
+    color: rgba(43, 54, 116, 1);
+
+    border: 1px solid rgba(67, 24, 255, 1);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.bikeStatusExportBtn:hover {
+    background: #4F46E5;
+    color: #fff;
+}
+
+.bikeStatusMoreBtn {
+    background: transparent !important;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #6B7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bikeStatusMoreBtn:hover {
+    color: #374151;
+}
+
+/* ---------- Cards Wrapper ---------- */
+.bikeStatusCardsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ---------- Card ---------- */
+.bikeStatusCard {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(3, 2, 41, 0.10);
+    /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.bikeStatusCardHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    /* margin-bottom: 16px; */
+    text-align: center;
+}
+
+.bikeStatusIconCircle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.bikeStatusIconPurple {
+    background: #8B5CF6;
+}
+
+.bikeStatusIconPink {
+    background: #EC4899;
+}
+
+.bikeStatusIconCyan {
+    background: #06B6D4;
+}
+
+.bikeStatusCardTitleWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.bikeStatusCardTitle {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(112, 126, 174, 1);
+}
+
+.bikeStatusCardSubtitle {
+    font-size: 13px;
+    color: #6B7280;
+}
+
+/* ---------- Chart Section ---------- */
+.bikeStatusChartSection {
+    position: relative;
+    width: 350px;
+}
+
+.bikeStatusTooltip {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: #FEF3F2;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    z-index: 10;
+}
+
+.bikeStatusTooltipTitle {
+    font-weight: 600;
+    color: #DC2626;
+    margin-bottom: 2px;
+}
+
+.bikeStatusTooltipSubtitle {
+    color: #6B7280;
+}
+
+/* ---------- Legend ---------- */
+.bikeStatusLegend {
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-bottom: 8px;
+    font-size: 11px;
+}
+
+.bikeStatusLegendItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #6B7280;
+}
+
+.bikeStatusLegendDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.bikeStatusLegendDotPurpleLight {
+    background: #DDD6FE;
+}
+
+.bikeStatusLegendDotPurple {
+    background: #A78BFA;
+}
+
+.bikeStatusLegendDotOrangeLight {
+    background: #FED7AA;
+}
+
+.bikeStatusLegendDotPurpleAlt {
+    background: #C084FC;
+}
+
+.bikeStatusLegendDotTealLight {
+    background: #99F6E4;
+}
+
+.bikeStatusLegendDotOrange {
+    background: #FB923C;
+}
+
+/* ---------- Chart Wrapper ---------- */
+.bikeStatusChartWrapper {
+    position: relative;
+    height: 80px;
+}
+
+/* ---------- X-Axis ---------- */
+.bikeStatusXAxis {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #9CA3AF;
+    margin-top: 8px;
+}
+
+.bikeStatusXAxis span {
+    flex: 1;
+    text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 768px) {
+    .bikeStatusContainer {
+        max-width: 100%;
+        padding: 24px;
+    }
+
+    .bikeStatusCardsWrapper {
+        display: grid;
+        /* grid-template-columns: repeat(3, 1fr); */
+        gap: 20px;
+    }
+}

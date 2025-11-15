@@ -1,0 +1,25 @@
+.email-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #030229;
+  }
+  
+  .input-wrapper input {
+    border: none;
+    outline: none;
+    flex: 1;
+    background: transparent;
+    color: #030229;
+  }
+  
+  .input-wrapper input::placeholder {
+    color: #999;
+  }
+  

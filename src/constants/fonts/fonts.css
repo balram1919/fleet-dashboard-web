@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'PoppinsSemiBold';
+  src: url('./Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RobotoRegular';
+  src: url('./Roboto-Regular.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
