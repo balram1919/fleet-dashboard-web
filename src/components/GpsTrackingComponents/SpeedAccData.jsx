@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ImuData.module.css";
 import DateTimeBox from "../DateTimeBox";
 import SplineChart from "../Chart/splineChart";
 
-const SpeedAccData = ({ gpsData }) => {
+const SpeedAccData = ({ gpsData = [] }) => {
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
   // ---- Use real timestamps as x-axis labels ----
-  const timestamps = gpsData.map((d) =>
+  const timestamps = gpsData?.map((d) =>
     new Date(d._time).toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit"
@@ -13,8 +15,8 @@ const SpeedAccData = ({ gpsData }) => {
   );
 
   // ---- Extract series data ----
-  const acclData = gpsData.map((d) => d.accl);
-  const speedData = gpsData.map((d) => d.speed);
+  const acclData = gpsData?.map((d) => d.accl);
+  const speedData = gpsData?.map((d) => d.speed);
   return (
     <div className={styles.imuDataContainer}>
       {/* Header */}
@@ -22,7 +24,10 @@ const SpeedAccData = ({ gpsData }) => {
         <h1 className={styles.imuDataTitle}>Speed & Acceleration Data</h1>
 
         <div className={styles.imuDataHeaderRight}>
-          <DateTimeBox date="6 Nov 2025" time="11:31 am" />
+          <DateTimeBox date={date}
+            time={time}
+            onDateChange={setDate}
+            onTimeChange={setTime} />
           <button className={styles.imuDataExportBtn}>Export Data</button>
         </div>
       </div>

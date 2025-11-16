@@ -9,7 +9,7 @@ const MapControls = ({ onLocate }) => {
       <button style={styles.btn} onClick={() => map.zoomIn()}>+</button>
       <button style={styles.btn} onClick={() => map.zoomOut()}>-</button>
 
-      <button style={styles.locateBtn} onClick={onLocate}>
+      <button style={styles.locateBtn} onClick={() => onLocate(map)}>
         📍
       </button>
     </div>

@@ -12,6 +12,7 @@ const useMap = dynamic(() => import("react-leaflet").then(m => m.useMap), { ssr:
 
 import "../GpsTrackingComponents/leaflet.css";
 import MapControls from "./MapControls";
+import GoToSelected from "./GoToSelected";
 
 // Fix Leaflet icons for Next.js
 let blueIcon, redIcon;
@@ -30,8 +31,6 @@ if (typeof window !== "undefined") {
     iconAnchor: [11, 11],
   });
 }
-
-
 // Component to update card position when map moves
 function FloatingCard({ point, onClose }) {
   const map = useMap();
@@ -110,15 +109,19 @@ function FloatingCard({ point, onClose }) {
   );
 }
 
-export default function MapComponent({ gpsData }) {
-  const coords = gpsData.map((i) => [i.lat, i.lon]);
+export default function MapComponent({ gpsData = [], selectedLatLon = false }) {
+
+  if (!gpsData || gpsData.length === 0) {
+    return <div>No GPS data available</div>;
+  }
+  const coords = gpsData?.map((i) => [i.lat, i.lon]);
 
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <MapContainer
-        center={coords[0]}
+        center={coords?.[0] || [0, 0]}
         zoom={13}
         zoomControl={false}
         style={{ height: "100%", width: "100%" }}
@@ -127,10 +130,11 @@ export default function MapComponent({ gpsData }) {
           attribution='&copy; OpenStreetMap contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        <GoToSelected selectedLatLon={selectedLatLon} />
 
-        <Polyline positions={coords} color="#7b4fff" weight={4} />
+        <Polyline positions={coords ?? [[0, 0], [0, 0]]} color="#7b4fff" weight={4} />
 
-        {gpsData.map((item, i) => (
+        {gpsData?.map((item, i) => (
           <Marker
             key={i}
             position={[item.lat, item.lon]}
@@ -141,7 +145,7 @@ export default function MapComponent({ gpsData }) {
           />
         ))}
         <MapControls
-          onLocate={() => {
+          onLocate={(map) => {
             if (!navigator.geolocation) return alert("GPS not supported");
 
             navigator.geolocation.getCurrentPosition((pos) => {
@@ -153,7 +157,7 @@ export default function MapComponent({ gpsData }) {
         {/* Floating Info Card linked to selected marker */}
         {selectedIndex !== null && (
           <FloatingCard
-            point={gpsData[selectedIndex]}
+            point={gpsData?.[selectedIndex]}
             onClose={() => setSelectedIndex(null)}
           />
         )}

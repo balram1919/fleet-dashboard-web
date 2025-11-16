@@ -1,6 +1,8 @@
-// DateTimeBox.jsx
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
 import styles from "../components/GpsTrackingComponents/ImuData.module.css";
+import moment from "moment";
 
 const CalendarIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -17,16 +19,49 @@ const ClockIcon = () => (
   </svg>
 );
 
-const DateTimeBox = ({ date, time }) => {
+export default function DateTimeBox({ date = "", time = "", onDateChange, onTimeChange }) {
+  const dateRef = useRef(null);
+  const timeRef = useRef(null);
+
+  const handleDateSelect = (e) => {
+    onDateChange(e.target.value);
+
+    setTimeout(() => {
+      timeRef.current?.showPicker();
+    }, 150);
+  };
+
   return (
     <div className={styles.imuDataDateTime}>
-      <CalendarIcon />
-      <span>{date}</span>
+      <span onClick={() => dateRef.current.showPicker()} style={{ cursor: "pointer" }}>
+        <CalendarIcon />
+      </span>
+
+      <input
+        type="date"
+        ref={dateRef}
+        value={date || ""}
+        onChange={handleDateSelect}
+        className={styles.hiddenInput}
+      />
+
+      <span>{!!date ? moment(date).format("DD MMM YY") : "--/--/----"}</span>
+
       <span className={styles.imuDataSeparator}>|</span>
-      <span>{time}</span>
-      <ClockIcon />
+
+      <span>{time || "--:--"}</span>
+
+      <input
+        type="time"
+        ref={timeRef}
+        value={time || ""}
+        onChange={(e) => onTimeChange(e.target.value)}
+        className={styles.hiddenInput}
+      />
+
+      <span onClick={() => timeRef.current.showPicker()} style={{ cursor: "pointer" }}>
+        <ClockIcon />
+      </span>
     </div>
   );
-};
-
-export default DateTimeBox;
+}

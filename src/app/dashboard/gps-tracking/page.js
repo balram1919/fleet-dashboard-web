@@ -6,6 +6,8 @@ import ImuData from "@/components/GpsTrackingComponents/ImuData";
 import SpeedAccData from "@/components/GpsTrackingComponents/SpeedAccData";
 import { getTelemetry, getVinNumber } from "@/lib/api/gpsTrackingService";
 import MapComponent from "@/components/GpsTrackingComponents/MapComponent";
+import { useUser } from "@/context/UserContext";
+import Dropdown from "@/components/Dropdown";
 const gpsData = [
     {
         lat: 11.591528,
@@ -139,43 +141,61 @@ const gpsData = [
     }
 ];
 const GpsTracking = () => {
-    const [isLoading, setIsLoading] = useState(false)
+
+    const { user, setLoading } = useUser();
+    const [selectedValue, setSelectedValue] = useState(null);
     const [vinOption, setVinOption] = useState(null)
     const [telemetry, setTelemetry] = useState(null)
+
+    const fatchTelemetry = async (id) => {
+        try {
+            const response = await getTelemetry(user?.tenants[0]?.tenantId, id)
+            setTelemetry(response?.rows)
+        } catch (error) {
+
+        }
+    }
     const fatchApis = async () => {
         try {
-            setIsLoading(true)
-            const res = await getVinNumber()
-            setVinOption(res)
-            const response = await getTelemetry()
-            console.log(res, "res");
-            setTelemetry(response?.rows)
-            console.log(res, response, "res");
-
+            setLoading(true)
+            const res = await getVinNumber(user?.tenants[0]?.tenantId)
+            setVinOption(res?.map((item) => ({ ...item, value: item?.id })))
+            await fatchTelemetry(res?.[0]?.id)
+            setSelectedValue(res?.[0]?.id)
         } catch (error) {
 
         } finally {
-            setIsLoading(false)
+            setLoading(false)
         }
     }
     useEffect(() => {
-        fatchApis()
-    }, [])
+        if (user?.tenants[0]?.tenantId) {
+            fatchApis()
+        }
+    }, [user])
     return (
         <>{/* Row 1 */}
             <div className={styles.row}>
                 <div className={styles.mapContainer}>
-                    <MapComponent gpsData={gpsData} />
+                    <Dropdown
+                        items={vinOption}
+                        value={selectedValue}
+                        onSelect={async (item) => {
+                            setSelectedValue(item.value);
+                            await fatchTelemetry(item.value)
+                        }}
+                    />
+                    <MapComponent gpsData={telemetry} />
                 </div>
 
-                <BikeStatus />
+                <BikeStatus gpsData={telemetry} />
             </div>
 
             {/* Row 2 */}
             <div className={styles.row}>
-                <ImuData gpsData={gpsData} />
+                <ImuData gpsData={telemetry} />
 
-                <SpeedAccData gpsData={gpsData} />
+                <SpeedAccData gpsData={telemetry} />
             </div></>
     );
 };

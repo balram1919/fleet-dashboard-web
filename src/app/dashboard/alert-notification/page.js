@@ -2,6 +2,11 @@
 import MapComponent from "@/components/GpsTrackingComponents/MapComponent";
 import styles from "./index.module.css";
 import BikeStatus from "@/components/GpsTrackingComponents/BikeStatus";
+import { getAlertAndNotification } from "@/lib/api/notificationService";
+import { useEffect, useState } from "react";
+import { useUser } from "@/context/UserContext";
+import AccidentTable from "@/components/Notifications/AccidentTable";
+import AlertsList from "@/components/Notifications/AlertsLIst";
 const gpsData = [
     {
         lat: 11.591528,
@@ -135,14 +140,37 @@ const gpsData = [
     }
 ];
 export default function Home() {
+    const { user, setLoading } = useUser();
+    const [selectedLatLon, setSelectedLatLon] = useState(null)
+    const [notifications, setNotification] = useState([])
+    const fatchApis = async () => {
+        try {
+            setLoading(true)
+            const res = await getAlertAndNotification(user?.tenants[0]?.tenantId, 10)
+            setNotification(res)
+        } catch (error) {
+
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        if (user?.tenants[0]?.tenantId) {
+            fatchApis()
+        }
+    }, [user])
+
+
     return (
         <>{/* Row 1 */}
             <div className={styles.row}>
                 <div className={styles.mapContainer}>
-                    <MapComponent gpsData={gpsData} />
+                    <MapComponent selectedLatLon={selectedLatLon} gpsData={notifications?.rows?.map((data) => { return { lon: data?.extra?.geoLocationData?.geometry?.lng, lat: data?.extra?.geoLocationData?.geometry?.lat } })} />
                 </div>
+                <AlertsList rows={notifications?.rows} tenantId={user?.tenants[0]?.tenantId} setSelectedLatLon={setSelectedLatLon} />
             </div>
-
+            <AccidentTable rows={notifications?.rows} tenantId={user?.tenants[0]?.tenantId} />
             {/* Row 2 */}
         </>
     );

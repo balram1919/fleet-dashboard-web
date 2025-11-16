@@ -1,13 +1,13 @@
 import api from "./axios";
 
-export const getVinNumber = async (tenantId = "30fc8580-45cc-4bad-95ba-9432318233a9") => {
-  const res = await api.get(`/tenant/${tenantId}/asset/autocomplete`);
+export const getVinNumber = async (tenantId) => {
+  const res = await api.get(`/tenant/${tenantId}/assets/autocomplete`);
 
   return res.data;
 };
 
-export const getTelemetry = async (tenantId = "30fc8580-45cc-4bad-95ba-9432318233a9", vinId = "fc86cbb1-8937-41cb-84df-425af234e025") => {
-  const res = await api.get(`/tenant/${tenantId}/assets/${vinId}/telemetry`);
+export const getTelemetry = async (tenantId, vinId) => {
+  const res = await api.get(`/tenant/${tenantId}/assets/${"91eafb8d-0f42-4155-b774-95e78457ad6f"}/telemetry`);
 
   return res.data;
 };

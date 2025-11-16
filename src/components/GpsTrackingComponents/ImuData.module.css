@@ -34,6 +34,14 @@
     flex-wrap: wrap;
 }
 
+.hiddenInput {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
 .imuDataDateTime {
     display: flex;
     align-items: center;
@@ -43,11 +51,19 @@
     padding: 8px 14px;
     border-radius: 8px;
     border: 1px solid rgba(200, 204, 217, 1);
+    background: #fff;
 }
 
 .imuDataSeparator {
     color: #9CA3AF;
 }
+
+.imuDateTimeDisplay {
+    font-size: 14px;
+    color: #303235;
+}
+
+
 
 .imuDataExportBtn {
     background: transparent;
