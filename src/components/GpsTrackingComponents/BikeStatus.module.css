@@ -105,7 +105,7 @@
     background: white;
     border-radius: 16px;
     padding: 20px;
-    border: 1px solid rgba(3, 2, 41, 0.10);
+    border: 1px solid #03022915;
     /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
     display: flex;
     align-items: end;
@@ -168,23 +168,28 @@
 
 .bikeStatusTooltip {
     position: absolute;
-    top: 8px;
+    top: -20px;
     right: 12px;
-    background: #FEF3F2;
+    background: #fff;
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 11px;
     z-index: 10;
+    border: 1px solid #7C8ABF25;
+    box-shadow: 0px 6px 8px 0px rgba(121, 125, 140, 0.27);
+
 }
 
 .bikeStatusTooltipTitle {
     font-weight: 600;
     color: #DC2626;
-    margin-bottom: 2px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #CFD1D7;
 }
 
 .bikeStatusTooltipSubtitle {
     color: #6B7280;
+    padding-top: 5px;
 }
 
 /* ---------- Legend ---------- */
@@ -192,7 +197,7 @@
     display: flex;
     justify-content: flex-start;
     gap: 16px;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
     font-size: 11px;
 }
 

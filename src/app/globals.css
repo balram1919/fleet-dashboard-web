@@ -23,7 +23,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Roboto", sans-serif !important;
 }
 
 @keyframes loadingAnimation {
@@ -46,4 +46,44 @@ body {
 
 .card {
   @apply bg-white p-4 rounded-xl shadow-sm border border-gray-100;
+}
+
+.dropdown-main {
+  border: 1px solid #C8CCD9;
+  padding: 5px 10px;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+
+.login-card input {
+  border: 1px solid #030229 !important;
+  color: #000 !important;
+  padding: 10px !important;
+  border-radius: 10px !important;
+  width: 250px !important;
+}
+
+.login-card button {
+  border: 1px solid #000;
+  color: #000;
+}
+
+.error-text {
+  color: red !important;
+  text-align: left !important;
+}
+
+
+td {
+  color: #707EAE;
+  border-right: 1px solid #03022920;
+}
+
+th {
+  border-right: 1px solid #03022920;
+  border-top: 1px solid #03022920;
+  border-bottom: 1px solid #03022920 !important;
 }

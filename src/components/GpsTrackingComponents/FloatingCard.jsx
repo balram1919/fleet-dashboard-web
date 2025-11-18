@@ -1,83 +1,162 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useCallback } from "react";
 import { useMap } from "react-leaflet";
-
+import L from "leaflet";
 
 function FloatingCard({ point, onClose }) {
-    const map = useMap();
-    const [pos, setPos] = useState(null);
+  const map = useMap();
+  const [pos, setPos] = useState(null);
 
-    const updatePosition = () => {
-        if (!point) return;
-        const latlng = L.latLng(point.lat, point.lon);
-        const pixel = map.latLngToContainerPoint(latlng);
-        setPos({ x: pixel.x, y: pixel.y });
+  const updatePosition = useCallback(() => {
+    if (!point) return;
+    const latlng = L.latLng(point.lat, point.lon);
+    const pixel = map.latLngToContainerPoint(latlng);
+    setPos({ x: pixel.x, y: pixel.y });
+  }, [point, map]);
+
+  useEffect(() => {
+    if (!point) return;
+    updatePosition();
+
+    map.on("move", updatePosition);
+    map.on("zoom", updatePosition);
+
+    return () => {
+      map.off("move", updatePosition);
+      map.off("zoom", updatePosition);
     };
+  }, [point, map, updatePosition]);
 
-    useEffect(() => {
-        updatePosition();
-        map.on("move", updatePosition);
-        map.on("zoom", updatePosition);
+  if (!pos || !point) return null;
 
-        return () => {
-            map.off("move", updatePosition);
-            map.off("zoom", updatePosition);
-        };
-    }, [point]);
+  return (
+    <div style={{ ...styles.card, left: pos.x + 20, top: pos.y - 80 }}>
+      {/* Close Button */}
+      <button onClick={onClose} style={styles.closeBtn}>
+        ✕
+      </button>
 
-    if (!pos) return null;
-
-    return (
-        <div
-            style={{
-                position: "absolute",
-                left: pos.x + 20, // card offset from marker
-                top: pos.y - 80,
-                width: "260px",
-                padding: "18px",
-                background: "#fff",
-                borderRadius: "15px",
-                boxShadow: "0 4px 18px rgba(0,0,0,0.15)",
-                zIndex: 1000,
-            }}
-        >
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <button
-                    onClick={onClose}
-                    style={{
-                        background: "transparent",
-                        border: "none",
-                        fontSize: "18px",
-                        cursor: "pointer",
-                    }}
-                >
-                    ✕
-                </button>
-            </div>
-
-            <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-                <img
-                    src="/user.jpg"
-                    width={45}
-                    height={45}
-                    style={{ borderRadius: "50%" }}
-                />
-                <div>
-                    <strong>User Name</strong>
-                    <br />
-                    <small>John Doe</small>
-                </div>
-            </div>
-
-            <p><b>Date:</b> {new Date(point._time).toLocaleDateString()}</p>
-            <p><b>Time:</b> {new Date(point._time).toLocaleTimeString()}</p>
-            <p><b>Lat:</b> {point.lat.toFixed(5)}</p>
-            <p><b>Lon:</b> {point.lon.toFixed(5)}</p>
-            <p><b>Speed:</b> {point.speed}</p>
-            <p><b>Pitch:</b> {point.pitch} | <b>Roll:</b> {point.roll} | <b>Yaw:</b> {point.yaw}</p>
-            <p><b>Accel:</b> {point.accl}</p>
+      {/* User Info */}
+      <div style={styles.userSection}>
+        <img src="/user.jpg" width={45} height={45} style={styles.userImg} />
+        <div>
+          <div style={styles.label}>User Name</div>
+          <div style={styles.value}>John Doe</div>
         </div>
-    );
+      </div>
+
+      {/* Date & Time */}
+      <div style={styles.row}>
+        <p style={styles.text}>
+          <span style={styles.label}>Date:</span>{" "}
+          {new Date(point._time).toLocaleDateString()}
+        </p>
+        <div style={styles.separator} />
+        <p style={styles.text}>
+          <span style={styles.label}>Time:</span>{" "}
+          {new Date(point._time).toLocaleTimeString()}
+        </p>
+      </div>
+
+      {/* Pitch Roll Yaw */}
+      <div style={styles.row}>
+        <p style={styles.text}>
+          <span style={styles.label}>Pitch:</span> {point.pitch}
+        </p>
+        <div style={styles.separator} />
+        <p style={styles.text}>
+          <span style={styles.label}>Roll:</span> {point.roll}
+        </p>
+        <div style={styles.separator} />
+        <p style={styles.text}>
+          <span style={styles.label}>Yaw:</span> {point.yaw}
+        </p>
+      </div>
+
+      {/* Speed Accel */}
+      <div style={styles.rowNoBorder}>
+        <p style={styles.text}>
+          <span style={styles.label}>Speed:</span> {point.speed}
+        </p>
+        <div style={styles.separator} />
+        <p style={styles.text}>
+          <span style={styles.label}>Accel:</span> {point.accl}
+        </p>
+      </div>
+    </div>
+  );
 }
 
-export default FloatingCard
+export default FloatingCard;
+
+/* ------------------ CSS Styles ------------------ */
+const styles = {
+  card: {
+    position: "absolute",
+    width: "260px",
+    padding: "15px",
+    background: "#fff",
+    borderRadius: "15px",
+    boxShadow: "0px 10px 40px rgba(67, 70, 83, 0.25)",
+    zIndex: 1000,
+    fontFamily: 'Roboto, "Roboto Fallback", sans-serif',
+    color: "#2B3674",
+  },
+
+  closeBtn: {
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    background: "transparent",
+    border: "none",
+    fontSize: "18px",
+    cursor: "pointer",
+  },
+
+  userSection: {
+    display: "flex",
+    gap: "10px",
+    paddingBottom: "7px",
+    alignItems: "center",
+    borderBottom: "1px solid #D4D7E3",
+  },
+
+  userImg: {
+    borderRadius: "50%",
+  },
+
+  row: {
+    borderBottom: "1px solid #D4D7E3",
+    padding: "5px 0px",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+
+  rowNoBorder: {
+    padding: "5px 0px",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+
+  text: {
+    fontSize: "12px",
+    fontWeight: 500,
+    margin: 0,
+  },
+
+  label: {
+    color: "#707EAE",
+  },
+
+  value: {
+    fontSize: "14px",
+    color: "#2B3674",
+  },
+
+  separator: {
+    height: "15px",
+    width: "2px",
+    background: "#D4D7E3",
+  },
+};

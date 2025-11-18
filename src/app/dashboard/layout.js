@@ -9,8 +9,6 @@ import Loading from "@/components/Loading";
 function DashboardContent({ children }) {
   const { user, loading } = useUser();
 
-
-
   return (
     <div className={styles.container}>
       {loading && <Loading fullScreen />}
@@ -21,7 +19,7 @@ function DashboardContent({ children }) {
       <div className={styles.mainWrapper}>
         <div className={styles.mainContent}>
           <Header user={user} />
-          <main className="p-6">{children}</main>
+          <main>{children}</main>
         </div>
       </div>
     </div>

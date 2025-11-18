@@ -1,0 +1,16 @@
+.bikeStatusContainer {
+    /* max-width: 480px; */
+    width: 45%;
+    background: #fff;
+    box-shadow: 0px 6px 10px 0px rgba(124, 138, 191, 0.25);
+    border-radius: 20px;
+    /* min-height: 100vh; */
+    padding: 16px;
+}
+
+.bikeStatusTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(112, 126, 174, 1);
+    margin: 0;
+}

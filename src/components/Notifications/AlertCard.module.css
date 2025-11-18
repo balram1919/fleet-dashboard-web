@@ -1,0 +1,139 @@
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+    transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.label {
+    color: #6b7280;
+}
+
+.timeInfo {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: #6b7280;
+}
+
+.timeInfo .value {
+    color: #111827;
+    font-weight: 500;
+}
+
+.separator {
+    color: #d1d5db;
+    margin: 0 4px;
+}
+
+.userName {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e3a8a;
+    margin: 6px 0 12px 0;
+    line-height: 1.3;
+}
+
+.statusRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.statusLabel {
+    color: #374151;
+    font-weight: 500;
+}
+
+.statusValue,
+.severityValue {
+    font-weight: 600;
+}
+
+.confirmed {
+    color: #16a34a;
+}
+
+.high {
+    color: #dc2626;
+}
+
+.medium {
+    color: #eab308;
+}
+
+.low {
+    color: #2563eb;
+}
+
+.waiting {
+    color: #f97316;
+}
+
+.resolved {
+    color: #2563eb;
+}
+
+.default {
+    color: #6b7280;
+}
+
+.location {
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.locationValue {
+    color: #111827;
+}
+
+.buttonContainer {
+
+    display: block;
+}
+
+.viewButton {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4980EA;
+    background: #5B93FF20;
+    /* border: 1px solid #93c5fd; */
+    cursor: pointer;
+    width: 120px;
+    transition: all 0.2s ease;
+}
+
+
+
+.viewButton:active {
+    transform: scale(0.98);
+}
+
+.alertCardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px
+}
