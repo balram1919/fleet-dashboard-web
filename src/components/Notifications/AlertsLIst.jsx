@@ -5,8 +5,8 @@ import AlertCard from "./AlertCard";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { getAlertAndNotification } from "@/lib/api/notificationService";
 
-export default function AlertsList({ rows = [], tenantId, setSelectedLatLon }) {
-    const [alerts, setAlerts] = useState(rows);
+export default function AlertsList({ rows = [], tenantId, setSelectedLatLon, alerts, setAlerts }) {
+
     const [offset, setOffset] = useState(rows?.length);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -68,7 +68,7 @@ export default function AlertsList({ rows = [], tenantId, setSelectedLatLon }) {
             {/* Alert List */}
             <div className="max-h-[400px] overflow-y-auto space-y-4">
                 {alerts.map((item, index) => (
-                    <AlertCard key={index} item={item} handelViewStatus={handelViewStatus}/>
+                    <AlertCard key={index} item={item} handelViewStatus={handelViewStatus} />
                 ))}
                 {/* Infinite scroll loader */}
                 <div ref={loaderRef} className="text-center py-4 text-gray-500">

@@ -142,11 +142,13 @@ const gpsData = [
 export default function Home() {
     const { user, setLoading } = useUser();
     const [selectedLatLon, setSelectedLatLon] = useState(null)
+    const [alerts, setAlerts] = useState([]);
     const [notifications, setNotification] = useState([])
     const fatchApis = async () => {
         try {
             setLoading(true)
             const res = await getAlertAndNotification(user?.tenants[0]?.tenantId, 10)
+            setAlerts(res?.rows)
             setNotification(res)
         } catch (error) {
 
@@ -166,9 +168,9 @@ export default function Home() {
         <>{/* Row 1 */}
             <div className={styles.row}>
                 <div className={styles.mapContainer}>
-                    <MapComponent selectedLatLon={selectedLatLon} gpsData={notifications?.rows?.map((data) => { return { lon: data?.extra?.geoLocationData?.geometry?.lng, lat: data?.extra?.geoLocationData?.geometry?.lat } })} />
+                    <MapComponent selectedLatLon={selectedLatLon} gpsData={alerts?.map((data) => { return { lon: data?.extra?.geoLocationData?.geometry?.lng, lat: data?.extra?.geoLocationData?.geometry?.lat } })} />
                 </div>
-                <AlertsList rows={notifications?.rows} tenantId={user?.tenants[0]?.tenantId} setSelectedLatLon={setSelectedLatLon} />
+                <AlertsList rows={notifications?.rows} tenantId={user?.tenants[0]?.tenantId} setSelectedLatLon={setSelectedLatLon} alerts={alerts} setAlerts={setAlerts} />
             </div>
             <AccidentTable rows={notifications?.rows} tenantId={user?.tenants[0]?.tenantId} />
             {/* Row 2 */}

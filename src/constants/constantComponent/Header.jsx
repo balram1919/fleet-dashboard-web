@@ -17,7 +17,7 @@ const menuItems = [
   { id: "gps", label: "GPS Tracking", route: "/dashboard/gps-tracking", },
   { id: "alerts", label: "Alert/Notification", route: "/dashboard/alert-notification", },
   { id: "maintenance", label: "Vehicle Maintenance", },
-  { id: "drivers", label: "Driver Management", },
+  { id: "drivers", label: "Driver Management", route : "/dashboard/driver-management" },
   { id: "fuel", label: "Fuel Usage", },
   { id: "past", label: "Past Data & Report", },
   { id: "geo", label: "Geo-fencing", },

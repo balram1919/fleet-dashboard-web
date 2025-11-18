@@ -59,7 +59,7 @@ const Login = () => {
     <form onSubmit={formik.handleSubmit}>
       <div className="login-wrapper">
 
-        <img src={bgUrl} alt="background" className="login-bg" />
+        <Image src={"/images/BG1.svg"} alt="background" fill className="login-bg" />
 
         <div className="login-content-center">
           <div className="login-card">

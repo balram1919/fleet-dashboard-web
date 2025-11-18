@@ -155,7 +155,7 @@ const menuItems = [
   { id: "gps", label: "GPS Tracking", Icon: IconPin, route: "/dashboard/gps-tracking", },
   { id: "alerts", label: "Alert/Notification", Icon: IconBell, route: "/dashboard/alert-notification", },
   { id: "maintenance", label: "Vehicle Maintenance", Icon: IconCog },
-  { id: "drivers", label: "Driver Management", Icon: IconUser },
+  { id: "drivers", label: "Driver Management", Icon: IconUser, route: "/dashboard/driver-management" },
   { id: "fuel", label: "Fuel Usage", Icon: IconDroplet },
   { id: "past", label: "Past Data & Report", Icon: IconReport },
   { id: "geo", label: "Geo-fencing", Icon: IconGeo },

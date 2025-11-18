@@ -109,7 +109,7 @@ function FloatingCard({ point, onClose }) {
   );
 }
 
-export default function MapComponent({ gpsData = [], selectedLatLon = false }) {
+export default function MapComponent({ gpsData = [], selectedLatLon = false, polyline = true }) {
 
   if (!gpsData || gpsData.length === 0) {
     return <div>No GPS data available</div>;
@@ -132,7 +132,7 @@ export default function MapComponent({ gpsData = [], selectedLatLon = false }) {
         />
         <GoToSelected selectedLatLon={selectedLatLon} />
 
-        <Polyline positions={coords ?? [[0, 0], [0, 0]]} color="#7b4fff" weight={4} />
+        {polyline && <Polyline positions={coords ?? [[0, 0], [0, 0]]} color="#7b4fff" weight={4} />}
 
         {gpsData?.map((item, i) => (
           <Marker
