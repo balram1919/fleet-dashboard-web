@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "../components/GpsTrackingComponents/ImuData.module.css";
 import moment from "moment";
 
@@ -24,9 +24,26 @@ export default function DateRangePicker({
   endDate = "",
   onStartDateChange,
   onEndDateChange,
+  onRangeSelected, // ⬅ callback when both dates chosen
 }) {
   const startRef = useRef(null);
   const endRef = useRef(null);
+
+  // Auto open End Date picker as soon as Start Date is selected
+  useEffect(() => {
+    if (startDate && !endDate) {
+      setTimeout(() => {
+        endRef.current?.showPicker();
+      }, 200);
+    }
+  }, [startDate]);
+
+  // If both dates selected → fire success callback
+  useEffect(() => {
+    if (startDate && endDate) {
+      onRangeSelected?.(startDate, endDate);
+    }
+  }, [startDate, endDate]);
 
   return (
     <div className={styles.imuDataDateTime}>

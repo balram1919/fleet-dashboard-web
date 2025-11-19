@@ -8,6 +8,7 @@ import { getTelemetry, getVinNumber } from "@/lib/api/gpsTrackingService";
 import MapComponent from "@/components/GpsTrackingComponents/MapComponent";
 import { useUser } from "@/context/UserContext";
 import Dropdown from "@/components/Dropdown";
+import DateRangePicker from "@/components/DateTimeBox";
 const gpsData = [
   {
     lat: 11.591528,
@@ -145,12 +146,13 @@ const GpsTracking = () => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [vinOption, setVinOption] = useState(null);
   const [telemetry, setTelemetry] = useState(null);
-
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const fatchTelemetry = async (id) => {
     try {
       const response = await getTelemetry(user?.tenants[0]?.tenantId, id);
       setTelemetry(response?.rows);
-    } catch (error) {}
+    } catch (error) { }
   };
   const fatchApis = async () => {
     try {
@@ -195,20 +197,32 @@ const GpsTracking = () => {
                 }}
               />
             </div>
+            <DateRangePicker
+
+              startDate={startDate}
+              endDate={endDate}
+              onStartDateChange={setStartDate}
+              onEndDateChange={setEndDate}
+              onRangeSelected={(start, end) => {
+                alert(`Range Selected: ${start} → ${end}`);
+                // or toast.success("Date range selected")
+                // or API call
+              }}
+            />
             <button className={styles.bikeStatusExportBtn}>Export Data</button>
           </div>
 
           <MapComponent gpsData={telemetry} />
         </div>
 
-        <BikeStatus gpsData={telemetry} />
+        <BikeStatus gpsData={telemetry} tenantId={user?.tenants[0]?.tenantId} vinId={selectedValue}/>
       </div>
 
       {/* Row 2 */}
       <div className={styles.row}>
-        <ImuData gpsData={telemetry} />
+        <ImuData gpsData={telemetry} tenantId={user?.tenants[0]?.tenantId} vinId={selectedValue} />
 
-        <SpeedAccData gpsData={telemetry} />
+        <SpeedAccData gpsData={telemetry} tenantId={user?.tenants[0]?.tenantId} vinId={selectedValue} />
       </div>
     </>
   );

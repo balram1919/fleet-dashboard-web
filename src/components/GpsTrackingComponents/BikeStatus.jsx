@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import styles from "./BikeStatus.module.css";
 import DateTimeBox from "../DateTimeBox";
 import DateRangePicker from "../DateTimeBox";
+import { getTelemetry } from "@/lib/api/gpsTrackingService";
+import moment from "moment";
 
 /* -------------------------------------------------
     SVG icons
@@ -53,7 +55,7 @@ const LockIcon = () => (
     fill="none"
   >
     <path
-      fill-rule="evenodd"
+      fillRule="evenodd"
       clip-rule="evenodd"
       d="M2.08294 7.60021V5.19986C2.08294 2.32844 4.50848 0 7.49962 0C10.4916 0 12.9171 2.32844 12.9171 5.19986V7.60021H13.5418C14.3474 7.60021 15 8.22673 15 9V16.6002C15 17.3735 14.3474 18 13.5418 18H1.45816C0.652644 18 0 17.3735 0 16.6002V9C0 8.22673 0.652644 7.60021 1.45816 7.60021H2.08294ZM4.58339 5.19986C4.58339 3.65331 5.88947 2.40035 7.49962 2.40035C9.11065 2.40035 10.4167 3.65337 10.4167 5.19986V7.60021H4.58318L4.58339 5.19986ZM8.3331 12.5492C8.71121 12.2959 8.95862 11.8761 8.95862 11.4003C8.95862 10.627 8.30516 9.99973 7.49964 9.99973C6.69495 9.99973 6.04148 10.627 6.04148 11.4003C6.04148 11.8761 6.2889 12.2959 6.667 12.5492V14.7997C6.667 15.2415 7.04017 15.5997 7.49964 15.5997C7.95994 15.5997 8.3331 15.2415 8.3331 14.7997V12.5492Z"
       fill="white"
@@ -70,28 +72,48 @@ const PowerIcon = () => (
     fill="none"
   >
     <path
-      fill-rule="evenodd"
+      fillRule="evenodd"
       clip-rule="evenodd"
       d="M2.08294 7.60021V5.19986C2.08294 2.32844 4.50848 0 7.49962 0C10.4916 0 12.9171 2.32844 12.9171 5.19986V7.60021H13.5418C14.3474 7.60021 15 8.22673 15 9V16.6002C15 17.3735 14.3474 18 13.5418 18H1.45816C0.652644 18 0 17.3735 0 16.6002V9C0 8.22673 0.652644 7.60021 1.45816 7.60021H2.08294ZM4.58339 5.19986C4.58339 3.65331 5.88947 2.40035 7.49962 2.40035C9.11065 2.40035 10.4167 3.65337 10.4167 5.19986V7.60021H4.58318L4.58339 5.19986ZM8.3331 12.5492C8.71121 12.2959 8.95862 11.8761 8.95862 11.4003C8.95862 10.627 8.30516 9.99973 7.49964 9.99973C6.69495 9.99973 6.04148 10.627 6.04148 11.4003C6.04148 11.8761 6.2889 12.2959 6.667 12.5492V14.7997C6.667 15.2415 7.04017 15.5997 7.49964 15.5997C7.95994 15.5997 8.3331 15.2415 8.3331 14.7997V12.5492Z"
       fill="white"
     />
   </svg>
 );
-const createChartConfig = (series, categories) => ({
+const createChartConfig = (series, categories, tooltipTitle) => ({
   chart: {
     type: "column",
     backgroundColor: "transparent",
     spacing: [10, 0, 10, 0],
     height: 90,
   },
-  title: { text: null },
-  credits: { enabled: false },
-  legend: { enabled: false },
-  tooltip: { enabled: false },
+
+  tooltip: {
+    enabled: true,
+    shared: false,
+    useHTML: true,
+    formatter: function () {
+      const label = this.series.name;
+      const value = this.y === 100 ? "On" : "Off";
+      const time = categories[this.point.index];
+
+      return `
+        <div style="
+          background:#111;
+          color:#fff;
+          padding:5px 8px;
+          border-radius:4px;
+          font-size:11px;
+        ">
+          <b>${tooltipTitle}: ${value}</b><br/>
+          ${time}
+        </div>
+      `;
+    },
+  },
 
   xAxis: {
-    type: "category", // << FIX HERE
-    categories: categories, // your formatted timestamps
+    type: "category",
+    categories,
     labels: {
       style: { color: "#aaa", fontSize: "10px" },
       rotation: -45,
@@ -114,8 +136,13 @@ const createChartConfig = (series, categories) => ({
     },
   },
 
+  title: { text: null },
+  legend: { enabled: false },
+  credits: { enabled: false },
+
   series,
 });
+
 
 /* -------------------------------------------------
     Sample data (remains the same)
@@ -180,14 +207,14 @@ const StatusCard = ({ data }) => {
 
       <div className={styles.bikeStatusChartSection}>
         {/* Static Tooltip Area */}
-        <div className={styles.bikeStatusTooltip}>
+        {/* <div className={styles.bikeStatusTooltip}>
           <div className={styles.bikeStatusTooltipTitle}>
             {data.tooltipTitle}
           </div>
           <div className={styles.bikeStatusTooltipSubtitle}>
             31/10/2025 | 6:10 min
           </div>
-        </div>
+        </div> */}
 
         {/* Legend */}
 
@@ -195,7 +222,7 @@ const StatusCard = ({ data }) => {
         <div className={styles.bikeStatusChartWrapper}>
           <HighchartsReact
             highcharts={Highcharts}
-            options={createChartConfig(data.series, data.categories)}
+            options={createChartConfig(data.series, data.categories, data.tooltipTitle)}
           />
         </div>
 
@@ -217,13 +244,19 @@ const StatusCard = ({ data }) => {
 /* -------------------------------------------------
     Main Component
     ------------------------------------------------- */
-const BikeStatus = ({ gpsData }) => {
-  const [date, setDate] = useState(null);
-  const [time, setTime] = useState(null);
+const BikeStatus = ({ gpsData, tenantId, vinId }) => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [speedAccData, setSpeedAccData] = useState([])
+  // ---- Use real timestamps as x-axis labels ----
 
+  useEffect(() => {
+
+    setSpeedAccData(gpsData)
+  }, [gpsData])
   const STATUS_CARDS = useMemo(() => {
-    if (!gpsData) return [];
-    const timeLabels = gpsData.map((item) =>
+    if (!speedAccData) return [];
+    const timeLabels = speedAccData.map((item) =>
       new Date(item._time).toLocaleString("en-US", {
         day: "2-digit",
         month: "2-digit",
@@ -231,9 +264,9 @@ const BikeStatus = ({ gpsData }) => {
         minute: "2-digit",
       })
     );
-    const engineRaw = gpsData.map((d) => d.eds);
-    const lockRaw = gpsData.map((d) => d.lock);
-    const ignitionRaw = gpsData.map((d) => (d.lock === 0 ? 1 : 0));
+    const engineRaw = speedAccData.map((d) => d.eds);
+    const lockRaw = speedAccData.map((d) => d.lock);
+    const ignitionRaw = speedAccData.map((d) => (d.lock === 0 ? 1 : 0));
 
     return [
       {
@@ -276,7 +309,7 @@ const BikeStatus = ({ gpsData }) => {
         series: makeSeries(ignitionRaw, "#99F6E4", "#FB923C"),
       },
     ];
-  }, [gpsData]);
+  }, [speedAccData]);
 
   return (
     <div className={styles.bikeStatusContainer}>
@@ -288,10 +321,20 @@ const BikeStatus = ({ gpsData }) => {
       {/* Date/Time Row */}
       <div className={styles.bikeStatusDateTimeRow}>
         <DateRangePicker
-          date={date}
-          time={time}
-          onDateChange={setDate}
-          onTimeChange={setTime}
+          startDate={startDate}
+          endDate={endDate}
+          onStartDateChange={setStartDate}
+          onEndDateChange={setEndDate}
+          onRangeSelected={async (start, end) => {
+            try {
+              const isoStartDate = moment(start).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+              const isoEndDate = moment(end).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+              const response = await getTelemetry(tenantId, vinId, isoStartDate, isoEndDate);
+              setSpeedAccData(response?.rows);
+            } catch (error) { }
+            // or toast.success("Date range selected")
+            // or API call
+          }}
         />
         <div className={styles.bikeStatusActions}>
           <button className={styles.bikeStatusExportBtn}>Export Data</button>

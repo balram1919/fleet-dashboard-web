@@ -10,6 +10,7 @@ import AccidentTable from "@/components/Notifications/AccidentTable";
 import AlertsList from "@/components/Notifications/AlertsLIst";
 import Dropdown from "@/components/Dropdown";
 import DateRangePicker from "@/components/DateTimeBox";
+import moment from "moment";
 const gpsData = [
   {
     lat: 11.591528,
@@ -147,13 +148,19 @@ export default function Home() {
   const [selectedLatLon, setSelectedLatLon] = useState(null);
   const [alerts, setAlerts] = useState([]);
   const [notifications, setNotification] = useState([]);
-  const fatchApis = async () => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const fatchApis = async (startDate,
+    endDate) => {
     try {
       setLoading(true);
-      const res = await getAlertAndNotification(user?.tenants[0]?.tenantId, 10);
+      const res = await getAlertAndNotification(user?.tenants[0]?.tenantId, 10, 0, startDate,
+        endDate);
       setAlerts(res?.rows);
       setNotification(res);
     } catch (error) {
+      console.log(error, "error");
+      
     } finally {
       setLoading(false);
     }
@@ -175,13 +182,22 @@ export default function Home() {
             <div style={{ marginLeft: "auto" }}>
               <DateRangePicker
 
-              //   date={date}
-              //   time={time}
-              //   onDateChange={setDate}
-              //   onTimeChange={setTime}
+                startDate={startDate}
+                endDate={endDate}
+                onStartDateChange={setStartDate}
+                onEndDateChange={setEndDate}
+                onRangeSelected={(start, end) => {
+                  // alert(`Range Selected: ${start} → ${end}`);
+                  // or toast.success("Date range selected")
+                  // or API call
+                }}
               />
             </div>
-            <button className={styles.bikeStatusExportBtn}>Refresh</button>
+            <button className={styles.bikeStatusExportBtn} onClick={() => {
+              const isoStartDate = moment(startDate).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+              const isoEndDate = moment(endDate).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+              fatchApis(isoStartDate, isoEndDate);
+            }}>Refresh</button>
           </div>
           <MapComponent
             selectedLatLon={selectedLatLon}
@@ -199,11 +215,15 @@ export default function Home() {
           setSelectedLatLon={setSelectedLatLon}
           alerts={alerts}
           setAlerts={setAlerts}
+          startDate={startDate}
+          endDate={endDate}
         />
       </div>
       <AccidentTable
         rows={notifications?.rows}
         tenantId={user?.tenants[0]?.tenantId}
+        startDate={startDate}
+        endDate={endDate}
       />
       {/* Row 2 */}
     </>
