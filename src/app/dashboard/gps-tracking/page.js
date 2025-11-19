@@ -212,9 +212,7 @@ const GpsTracking = () => {
                   // or API call
                 }}
               />
-              <button className={styles.bikeStatusExportBtn}>
-                Export Data
-              </button>
+              <button className={styles.bikeStatusExportBtn}>Refresh</button>
             </div>
 
             <MapComponent gpsData={telemetry} />
