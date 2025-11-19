@@ -65,11 +65,7 @@ body {
   border-radius: 10px !important;
   width: 100% !important;
 } */
-/* 
-.login-card button {
-  border: 1px solid #000;
-  color: #000;
-} */
+/* \ */
 
 .error-text {
   color: red !important;
@@ -98,4 +94,17 @@ th {
 .statusInactive {
   color: #745C11;
   background-color: #FFE185;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  /* height: 4px; */
+  background-color: #B1BACF20;
+  border-radius: 4px;
+  /* or add it to the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C9CFD9;
+  border-radius: 10px;
 }

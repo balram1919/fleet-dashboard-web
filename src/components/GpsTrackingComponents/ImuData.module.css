@@ -130,15 +130,15 @@
 }
 
 .imuDataLegendDotGreen {
-    background: #10B981;
+    background: #10B981 !important;
 }
 
 .imuDataLegendDotOrange {
-    background: #F59E0B;
+    background: #F59E0B !important;
 }
 
 .imuDataLegendDotBlue {
-    background: #3B82F6;
+    background: #3B82F6 !important;
 }
 
 /* ---------- Responsive ---------- */
