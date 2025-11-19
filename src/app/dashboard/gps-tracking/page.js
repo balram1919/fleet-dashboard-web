@@ -152,7 +152,7 @@ const GpsTracking = () => {
     try {
       const response = await getTelemetry(user?.tenants[0]?.tenantId, id);
       setTelemetry(response?.rows);
-    } catch (error) { }
+    } catch (error) {}
   };
   const fatchApis = async () => {
     try {
@@ -174,55 +174,72 @@ const GpsTracking = () => {
   return (
     <>
       {/* Row 1 */}
-      <div className={styles.row}>
-        <div className={styles.mapContainer}>
-          <div className={styles.mapContainerHeader}>
-            <p>Map Overview</p>
-            <div
-              className={styles.row}
-              style={{
-                alignItems: "center",
-                gap: "16px",
-                marginTop: 0,
-                marginLeft: "auto",
-              }}
-            >
-              <p>VIN Number</p>
-              <Dropdown
-                items={vinOption}
-                value={selectedValue}
-                onSelect={async (item) => {
-                  setSelectedValue(item.value);
-                  await fatchTelemetry(item.value);
+      <div
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6"
+        style={{ marginTop: "15px" }}
+      >
+        <div className="col-span-2">
+          <div className={styles.mapContainer}>
+            <div className={styles.mapContainerHeader}>
+              <p>Map Overview</p>
+              <div
+                className={styles.row}
+                style={{
+                  alignItems: "center",
+                  gap: "16px",
+                  marginTop: 0,
+                  marginLeft: "auto",
+                }}
+              >
+                <p>VIN Number</p>
+                <Dropdown
+                  items={vinOption}
+                  value={selectedValue}
+                  onSelect={async (item) => {
+                    setSelectedValue(item.value);
+                    await fatchTelemetry(item.value);
+                  }}
+                />
+              </div>
+              <DateRangePicker
+                startDate={startDate}
+                endDate={endDate}
+                onStartDateChange={setStartDate}
+                onEndDateChange={setEndDate}
+                onRangeSelected={(start, end) => {
+                  alert(`Range Selected: ${start} → ${end}`);
+                  // or toast.success("Date range selected")
+                  // or API call
                 }}
               />
+              <button className={styles.bikeStatusExportBtn}>
+                Export Data
+              </button>
             </div>
-            <DateRangePicker
 
-              startDate={startDate}
-              endDate={endDate}
-              onStartDateChange={setStartDate}
-              onEndDateChange={setEndDate}
-              onRangeSelected={(start, end) => {
-                alert(`Range Selected: ${start} → ${end}`);
-                // or toast.success("Date range selected")
-                // or API call
-              }}
-            />
-            <button className={styles.bikeStatusExportBtn}>Export Data</button>
+            <MapComponent gpsData={telemetry} />
           </div>
-
-          <MapComponent gpsData={telemetry} />
         </div>
-
-        <BikeStatus gpsData={telemetry} tenantId={user?.tenants[0]?.tenantId} vinId={selectedValue}/>
+        <BikeStatus
+          gpsData={telemetry}
+          tenantId={user?.tenants[0]?.tenantId}
+          vinId={selectedValue}
+        />
       </div>
 
       {/* Row 2 */}
       <div className={styles.row}>
-        <ImuData gpsData={telemetry} tenantId={user?.tenants[0]?.tenantId} vinId={selectedValue} />
+        <ImuData
+          gpsData={telemetry}
+          tenantId={user?.tenants[0]?.tenantId}
+          vinId={selectedValue}
+        />
 
-        <SpeedAccData gpsData={telemetry} tenantId={user?.tenants[0]?.tenantId} vinId={selectedValue} />
+        <SpeedAccData
+          gpsData={telemetry}
+          tenantId={user?.tenants[0]?.tenantId}
+          vinId={selectedValue}
+        />
       </div>
     </>
   );

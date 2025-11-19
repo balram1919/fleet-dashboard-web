@@ -193,9 +193,9 @@
     color: rgba(43, 54, 116, 1);
 
     border: 1px solid rgba(67, 24, 255, 1);
-    padding: 8px 16px;
     border-radius: 50px;
-    font-size: 13px;
+    font-size: 12px;
+    padding: 10px 15px;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s;

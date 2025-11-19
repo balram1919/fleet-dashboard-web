@@ -99,14 +99,14 @@ const createChartConfig = (series, categories, tooltipTitle) => ({
 
       return `
         <div style="
-          background:#111;
-          color:#fff;
-          padding:5px 8px;
+      
+          color:#707EAE;
           border-radius:4px;
           font-size:11px;
         ">
-          <b>${tooltipTitle}: ${value}</b><br/>
-          ${time}
+          <div>${tooltipTitle}: ${value}</div>
+          <hr style="border-color: '#CFD1D7"; margin: "5px 0px"; />
+          <div>${time}</div>
         </div>
       `;
     },
@@ -143,7 +143,6 @@ const createChartConfig = (series, categories, tooltipTitle) => ({
 
   series,
 });
-
 
 /* -------------------------------------------------
     Sample data (remains the same)
@@ -223,7 +222,11 @@ const StatusCard = ({ data }) => {
         <div className={styles.bikeStatusChartWrapper}>
           <HighchartsReact
             highcharts={Highcharts}
-            options={createChartConfig(data.series, data.categories, data.tooltipTitle)}
+            options={createChartConfig(
+              data.series,
+              data.categories,
+              data.tooltipTitle
+            )}
           />
         </div>
 
@@ -248,13 +251,12 @@ const StatusCard = ({ data }) => {
 const BikeStatus = ({ gpsData, tenantId, vinId }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [speedAccData, setSpeedAccData] = useState([])
+  const [speedAccData, setSpeedAccData] = useState([]);
   // ---- Use real timestamps as x-axis labels ----
 
   useEffect(() => {
-
-    setSpeedAccData(gpsData)
-  }, [gpsData])
+    setSpeedAccData(gpsData);
+  }, [gpsData]);
   const STATUS_CARDS = useMemo(() => {
     if (!speedAccData) return [];
     const timeLabels = speedAccData.map((item) =>
@@ -328,20 +330,33 @@ const BikeStatus = ({ gpsData, tenantId, vinId }) => {
           onEndDateChange={setEndDate}
           onRangeSelected={async (start, end) => {
             try {
-              const isoStartDate = moment(start).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
-              const isoEndDate = moment(end).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
-              const response = await getTelemetry(tenantId, vinId, isoStartDate, isoEndDate);
+              const isoStartDate = moment(start)
+                .utc()
+                .format("YYYY-MM-DDTHH:mm:ss[Z]");
+              const isoEndDate = moment(end)
+                .utc()
+                .format("YYYY-MM-DDTHH:mm:ss[Z]");
+              const response = await getTelemetry(
+                tenantId,
+                vinId,
+                isoStartDate,
+                isoEndDate
+              );
               setSpeedAccData(response?.rows);
-            } catch (error) { }
+            } catch (error) {}
             // or toast.success("Date range selected")
             // or API call
           }}
         />
         <div className={styles.bikeStatusActions}>
-          <button className={styles.bikeStatusExportBtn} onClick={() => {
-            exportToCsv('bike-status', speedAccData)
-
-          }}>Export Data</button>
+          <button
+            className={styles.bikeStatusExportBtn}
+            onClick={() => {
+              exportToCsv("bike-status", speedAccData);
+            }}
+          >
+            Export Data
+          </button>
         </div>
       </div>
       {/* Cards: Using map for repetitive components */}

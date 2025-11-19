@@ -150,17 +150,20 @@ export default function Home() {
   const [notifications, setNotification] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const fatchApis = async (startDate,
-    endDate) => {
+  const fatchApis = async (startDate, endDate) => {
     try {
       setLoading(true);
-      const res = await getAlertAndNotification(user?.tenants[0]?.tenantId, 10, 0, startDate,
-        endDate);
+      const res = await getAlertAndNotification(
+        user?.tenants[0]?.tenantId,
+        10,
+        0,
+        startDate,
+        endDate
+      );
       setAlerts(res?.rows);
       setNotification(res);
     } catch (error) {
       console.log(error, "error");
-      
     } finally {
       setLoading(false);
     }
@@ -175,39 +178,52 @@ export default function Home() {
   return (
     <>
       {/* Row 1 */}
-      <div className={styles.row}>
-        <div className={styles.mapContainer}>
-          <div className={styles.mapContainerHeader}>
-            <p>Accident Map</p>
-            <div style={{ marginLeft: "auto" }}>
-              <DateRangePicker
-
-                startDate={startDate}
-                endDate={endDate}
-                onStartDateChange={setStartDate}
-                onEndDateChange={setEndDate}
-                onRangeSelected={(start, end) => {
-                  // alert(`Range Selected: ${start} → ${end}`);
-                  // or toast.success("Date range selected")
-                  // or API call
+      <div
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6"
+        style={{ marginTop: "15px" }}
+      >
+        <div className="col-span-2">
+          <div className={styles.mapContainer}>
+            <div className={styles.mapContainerHeader}>
+              <p>Accident Map</p>
+              <div style={{ marginLeft: "auto" }}>
+                <DateRangePicker
+                  startDate={startDate}
+                  endDate={endDate}
+                  onStartDateChange={setStartDate}
+                  onEndDateChange={setEndDate}
+                  onRangeSelected={(start, end) => {
+                    // alert(`Range Selected: ${start} → ${end}`);
+                    // or toast.success("Date range selected")
+                    // or API call
+                  }}
+                />
+              </div>
+              <button
+                className={styles.bikeStatusExportBtn}
+                onClick={() => {
+                  const isoStartDate = moment(startDate)
+                    .utc()
+                    .format("YYYY-MM-DDTHH:mm:ss[Z]");
+                  const isoEndDate = moment(endDate)
+                    .utc()
+                    .format("YYYY-MM-DDTHH:mm:ss[Z]");
+                  fatchApis(isoStartDate, isoEndDate);
                 }}
-              />
+              >
+                Refresh
+              </button>
             </div>
-            <button className={styles.bikeStatusExportBtn} onClick={() => {
-              const isoStartDate = moment(startDate).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
-              const isoEndDate = moment(endDate).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
-              fatchApis(isoStartDate, isoEndDate);
-            }}>Refresh</button>
+            <MapComponent
+              selectedLatLon={selectedLatLon}
+              gpsData={alerts?.map((data) => {
+                return {
+                  lon: data?.extra?.geoLocationData?.geometry?.lng,
+                  lat: data?.extra?.geoLocationData?.geometry?.lat,
+                };
+              })}
+            />
           </div>
-          <MapComponent
-            selectedLatLon={selectedLatLon}
-            gpsData={alerts?.map((data) => {
-              return {
-                lon: data?.extra?.geoLocationData?.geometry?.lng,
-                lat: data?.extra?.geoLocationData?.geometry?.lat,
-              };
-            })}
-          />
         </div>
         <AlertsList
           rows={notifications?.rows}
