@@ -6,6 +6,7 @@ import DateTimeBox from "../DateTimeBox";
 import DateRangePicker from "../DateTimeBox";
 import { getTelemetry } from "@/lib/api/gpsTrackingService";
 import moment from "moment";
+import { exportToCsv } from "@/lib/constants";
 
 /* -------------------------------------------------
     SVG icons
@@ -337,7 +338,10 @@ const BikeStatus = ({ gpsData, tenantId, vinId }) => {
           }}
         />
         <div className={styles.bikeStatusActions}>
-          <button className={styles.bikeStatusExportBtn}>Export Data</button>
+          <button className={styles.bikeStatusExportBtn} onClick={() => {
+            exportToCsv('bike-status', speedAccData)
+
+          }}>Export Data</button>
         </div>
       </div>
       {/* Cards: Using map for repetitive components */}

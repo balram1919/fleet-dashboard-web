@@ -74,7 +74,10 @@ const DataTable = ({
                     {filterOptions?.map((filter, idx) => (
                         <button
                             key={idx}
-                            onClick={() => onFilter?.(filter.value)}
+                            onClick={() => {
+                                debugger
+                                onFilter?.(filter.value)
+                            }}
                             className="px-3 py-1.5 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
                         >
                             {filter.label}

@@ -5,6 +5,7 @@ import SplineChart from "../Chart/splineChart";
 import DateRangePicker from "../DateTimeBox";
 import { getTelemetry } from "@/lib/api/gpsTrackingService";
 import moment from "moment";
+import { exportToCsv } from "@/lib/constants";
 
 const SpeedAccData = ({ gpsData = [], tenantId, vinId }) => {
   const [startDate, setStartDate] = useState(null);
@@ -50,7 +51,10 @@ const SpeedAccData = ({ gpsData = [], tenantId, vinId }) => {
               // or API call
             }}
           />
-          <button className={styles.imuDataExportBtn}>Export Data</button>
+          <button className={styles.imuDataExportBtn} onClick={() => {
+            exportToCsv('Speed-and-acceleration-data', speedAccData)
+
+          }}>Export Data</button>
         </div>
       </div>
 
