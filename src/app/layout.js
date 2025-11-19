@@ -1,6 +1,7 @@
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import FirebaseNotificationInit from "@/components/FirebaseNotificationInit";
 
 // Load Roboto font
 const roboto = Roboto({
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${roboto.variable} antialiased`}>
+        <FirebaseNotificationInit />
         <Toaster position="top-center" />
         {children}
       </body>

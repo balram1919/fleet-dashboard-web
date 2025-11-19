@@ -75,7 +75,6 @@ const DataTable = ({
             <button
               key={idx}
               onClick={() => {
-                debugger;
                 onFilter?.(filter.value);
               }}
               className={styles.filterButton}
@@ -83,7 +82,6 @@ const DataTable = ({
               {filter.label}
             </button>
           ))}
-          <button className={styles.filterButton}>Export Data</button>
         </div>
       </div>
 

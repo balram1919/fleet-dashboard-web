@@ -5,6 +5,7 @@ import { getAlertAndNotification } from "@/lib/api/notificationService";
 import moment from "moment";
 import { useState, useCallback } from "react";
 import styles from "./AccidentTable.module.css";
+import { exportToCsv } from "@/lib/constants";
 
 export default function AccidentTable({ rows = [], tenantId }) {
   const [accident, setAccident] = useState(rows);
@@ -57,7 +58,9 @@ export default function AccidentTable({ rows = [], tenantId }) {
         <div style={{ marginLeft: "auto" }}>
           <button className={styles.bikeStatusExportBtn}> + New</button>
         </div>
-        <button className={styles.bikeStatusExportBtn}>Export Data</button>
+        <button className={styles.bikeStatusExportBtn} onClick={() => {
+          exportToCsv("past-accidents", accident);
+        }}>Export Data</button>
       </div>
       <div className="max-h-[400px] overflow-y-auto border border-t-0 rounded-b-lg">
         <table className="w-full text-sm">
