@@ -67,31 +67,37 @@ export default function AlertsList({
         }}
       >
         <div
-          className="px-4 py-1 rounded-full text-sm"
+          className="rounded-full "
           style={{
             border: "1px solid #A5AECC",
             background: "#F4F7FE",
             color: "#2B3674",
+            fontSize: "10px",
+            padding: "8px 14px",
           }}
         >
           Active Alerts: 20
         </div>
         <div
-          className="px-4 py-1 rounded-full "
+          className="rounded-full "
           style={{
             border: "1px solid #A5AECC",
             background: "#fff",
             color: "#2B3674",
+            fontSize: "10px",
+            padding: "8px 14px",
           }}
         >
           Critical: 5
         </div>
         <div
-          className="px-4 py-1 rounded-full"
+          className=" rounded-full"
           style={{
             border: "1px solid #A5AECC",
             background: "#fff",
             color: "#2B3674",
+            fontSize: "10px",
+            padding: "8px 14px",
           }}
         >
           Awaiting Response: 2

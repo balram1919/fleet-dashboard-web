@@ -174,3 +174,34 @@
     color: #6b7280;
     font-size: 13px;
 }
+
+.mapContainerHeader {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding: 15px;
+}
+
+.mapContainerHeader p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #707EAE;
+}
+
+.bikeStatusExportBtn {
+    background: transparent;
+    color: rgba(43, 54, 116, 1);
+
+    border: 1px solid rgba(67, 24, 255, 1);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.bikeStatusExportBtn:hover {
+    background: #4F46E5;
+    color: #fff;
+}

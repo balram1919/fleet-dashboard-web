@@ -66,7 +66,7 @@ export default function AlertCard({ item, handelViewStatus }) {
       </div>
       <div className={styles.alertCardFooter}>
         <div className={styles.location} style={{ margin: "0px" }}>
-          Location :{" "}
+          <span className={styles.statusLabel}> Location : </span>
           <span className={styles.locationValue}>
             {item?.extra?.geoLocationData?.formatted ||
               "Location not available"}

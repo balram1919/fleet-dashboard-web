@@ -80,10 +80,22 @@ body {
 td {
   color: #707EAE;
   border-right: 1px solid #03022920;
+  font-size: 13px;
 }
 
 th {
   border-right: 1px solid #03022920;
   border-top: 1px solid #03022920;
   border-bottom: 1px solid #03022920 !important;
+  font-size: 14px;
+}
+
+.statusActive {
+  color: #296E27;
+  background-color: #3FBC3C44;
+}
+
+.statusInactive {
+  color: #745C11;
+  background-color: #FFE185;
 }
