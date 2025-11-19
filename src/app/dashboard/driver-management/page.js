@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
-import { ActionButtons, StatusBadge } from "@/lib/constants";
+import { ActionButtons, exportToCsv, StatusBadge } from "@/lib/constants";
 import DataTable from "@/components/DataTable";
 import {
   getUserPermissions,
@@ -122,9 +122,15 @@ export default function Home() {
             pagination={permissionsPagination}
             onPageChange={fetchPermissions}
             totalItems={permissionsData?.count}
+            onFilter={() => {
+              exportToCsv("user-permissions", permissionsData?.rows);
+            }}
             filterOptions={[
               // { label: 'Filter', value: 'filter' },
-              { label: " + New", value: "export" },
+              {
+                label: "Export Data",
+                value: "export",
+              },
             ]}
           />
         </div>
@@ -137,6 +143,15 @@ export default function Home() {
           pagination={usersPagination}
           onPageChange={fetchUsers}
           totalItems={usersData?.count}
+          onFilter={() => {
+            exportToCsv("users", usersData?.rows);
+          }}
+          filterOptions={[
+            {
+              label: "Export Data",
+              value: "export",
+            },
+          ]}
         />
       </div>
     </div>

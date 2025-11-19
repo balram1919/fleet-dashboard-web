@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ImuData.module.css";
 import DateTimeBox from "../DateTimeBox";
 import SplineChart from "../Chart/splineChart";
+import DateRangePicker from "../DateTimeBox";
+import { getTelemetry } from "@/lib/api/gpsTrackingService";
+import moment from "moment";
+import { exportToCsv } from "@/lib/constants";
 
-const SpeedAccData = ({ gpsData = [] }) => {
-  const [date, setDate] = useState(null);
-  const [time, setTime] = useState(null);
+const SpeedAccData = ({ gpsData = [], tenantId, vinId }) => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [speedAccData, setSpeedAccData] = useState([])
   // ---- Use real timestamps as x-axis labels ----
-  const timestamps = gpsData?.map((d) =>
+
+  useEffect(() => {
+
+    setSpeedAccData(gpsData)
+  }, [gpsData])
+  const timestamps = speedAccData?.map((d) =>
     new Date(d._time).toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit"
@@ -15,8 +25,8 @@ const SpeedAccData = ({ gpsData = [] }) => {
   );
 
   // ---- Extract series data ----
-  const acclData = gpsData?.map((d) => d.accl);
-  const speedData = gpsData?.map((d) => d.speed);
+  const acclData = speedAccData?.map((d) => d.accl);
+  const speedData = speedAccData?.map((d) => d.speed);
   return (
     <div className={styles.imuDataContainer}>
       {/* Header */}
@@ -24,11 +34,27 @@ const SpeedAccData = ({ gpsData = [] }) => {
         <h1 className={styles.imuDataTitle}>Speed & Acceleration Data</h1>
 
         <div className={styles.imuDataHeaderRight}>
-          <DateTimeBox date={date}
-            time={time}
-            onDateChange={setDate}
-            onTimeChange={setTime} />
-          <button className={styles.imuDataExportBtn}>Export Data</button>
+          <DateRangePicker
+
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+            onRangeSelected={async (start, end) => {
+              try {
+                const isoStartDate = moment(start).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+                const isoEndDate = moment(end).utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+                const response = await getTelemetry(tenantId, vinId, isoStartDate, isoEndDate);
+                setSpeedAccData(response?.rows);
+              } catch (error) { }
+              // or toast.success("Date range selected")
+              // or API call
+            }}
+          />
+          <button className={styles.imuDataExportBtn} onClick={() => {
+            exportToCsv('Speed-and-acceleration-data', speedAccData)
+
+          }}>Export Data</button>
         </div>
       </div>
 
