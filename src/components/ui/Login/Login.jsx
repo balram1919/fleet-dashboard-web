@@ -12,16 +12,11 @@ import Group1850 from "../../../../public/images/Group1850.svg";
 
 import "./Login.css";
 import { ViewHeight, ViewWidth } from "@/lib/constants";
-import SearchBar from "@/components/Login/SearchBar";
-import SearchBarForgot from "@/components/Login/SearchBarForgot";
-import { Button } from "@/components/Login/TouchableButton";
 import { login } from "@/lib/api/authService";
 import { useRouter } from "next/navigation";
 
-
 const Login = () => {
-
-  const router = useRouter()
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -42,7 +37,7 @@ const Login = () => {
         toast.dismiss();
         toast.success("Login successful!");
 
-        router.push("/dashboard")
+        router.push("/dashboard");
       } catch (error) {
         toast.dismiss();
 
@@ -58,79 +53,95 @@ const Login = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="login-wrapper">
-
-        <Image src={"/images/BG1.svg"} alt="background" fill className="login-bg" />
+        <Image
+          src={"/images/BG1.svg"}
+          alt="background"
+          fill
+          className="login-bg"
+        />
 
         <div className="login-content-center">
           <div className="login-card">
+            {/* Logo */}
             <div className="login-logo-container">
               <Image
                 src={logoUrl}
-                alt="App Logo"
-                width={121}
-                height={108}
-                style={{ width: ViewWidth(121), height: ViewHeight(108) }}
+                alt="SI Fleet Management"
+                width={80}
+                height={80}
                 priority
               />
             </div>
 
+            {/* Title & Subtitle */}
             <div className="login-title-group">
-              <p className="login-title" style={{ fontSize: ViewWidth(32) }}>
-                Login
-              </p>
-              <p className="login-subtitle" style={{ fontSize: ViewWidth(16) }}>
-                Enter your Email & Password
-              </p>
+              <p className="login-title">Login</p>
+              <p className="login-subtitle">Enter your Email & Password</p>
             </div>
 
             {/* Inputs */}
-            <div className="login-input-group" style={{ gap: ViewHeight(12) }}>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="login-input"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-              />
+            <div className="login-input-group">
+              {/* Email Input */}
+              <div className="input-wrapper">
+                <label className="input-label">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your email address"
+                  className="login-input"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </div>
               {formik.errors.email && formik.touched.email && (
                 <p className="error-text">{formik.errors.email}</p>
               )}
 
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="login-input"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-              />
+              {/* Password Input */}
+              <div className="input-wrapper">
+                <label className="input-label">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  className="login-input"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </div>
               {formik.errors.password && formik.touched.password && (
                 <p className="error-text">{formik.errors.password}</p>
               )}
             </div>
 
-            <div
-              className="login-button-wrapper"
-              style={{ marginTop: ViewHeight(30) }}
-            >
+            {/* Forgot Password Link */}
+            <div className="forgot-password-wrapper">
+              <a href="#" className="forgot-password-link">
+                Forgot Password?
+              </a>
+            </div>
+
+            {/* Login Button */}
+            <div className="login-button-wrapper">
               <button className="btn-main" type="submit">
                 Login
               </button>
             </div>
 
+            {/* Footer */}
             <div className="login-footer">
               <Image
                 src={Group1850}
                 alt="Startec Dynamics"
-                width={239}
-                height={85}
+                width={160}
+                height={57}
                 className="login-footer-img"
-                style={{
-                  width: ViewWidth(239),
-                  height: ViewHeight(85),
-                }}
               />
+              <p className="login-footer-text">
+                © 2025 Startec Dynamics Inc. All rights reserved
+              </p>
             </div>
           </div>
         </div>

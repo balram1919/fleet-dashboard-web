@@ -58,18 +58,18 @@ body {
 }
 
 
-.login-card input {
+/* .login-card input {
   border: 1px solid #030229 !important;
   color: #000 !important;
   padding: 10px !important;
   border-radius: 10px !important;
-  width: 250px !important;
-}
-
+  width: 100% !important;
+} */
+/* 
 .login-card button {
   border: 1px solid #000;
   color: #000;
-}
+} */
 
 .error-text {
   color: red !important;
